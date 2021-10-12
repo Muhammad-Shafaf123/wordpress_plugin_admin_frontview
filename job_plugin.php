@@ -8,16 +8,22 @@
  * Author URI: https://www.facebook.com
  */
 
+// connect to pages.
+require_once('job-settings.php');
+require_once('include.php');
+
+
 // root class for creating custom taxomony.
-class CustomTaxomony{
+class RootPluginClass
+{
   public function __construct(){
     add_action('init',array($this,'create_post_type'));
-    add_action('add_meta_boxes',array($this, 'meta_box_callback'));
-    add_action('admin_menu',array($this, 'sub_admin_menu'));
-    add_action( 'save_post', array($this,'save_post_data'));
-
+    add_action('add_meta_boxes',array($this, 'meta_box_callback_qualification'));
+    add_action('add_meta_boxes',array($this, 'meta_box_callback_salary'));
   }
-  public function create_post_type(){
+  // create custom post type.
+  public function create_post_type()
+  {
     register_post_type('job-manage',
                         array($this, 'labels'=>
                         array($this,'name'=>__('Job Manager'),'singular_name' =>__('jobs')),
@@ -26,41 +32,55 @@ class CustomTaxomony{
                         )
                       );
   }
-  public function meta_box_callback(){
-    add_meta_box('meta_1', 'sample field', array($this, 'form_field_callback'));
+  // meta box for qualification
+  public function meta_box_callback_qualification()
+  {
+    add_meta_box('meta_1', 'Field', array($this, 'form_field_callback'));
   }
-  public function form_field_callback(){
+  // meta box for adding salary.
+  public function meta_box_callback_salary()
+  {
+    add_meta_box('meta_id', 'Drop down', array($this, 'drop_down_meta_callback'));
+  }
+  public function drop_down_meta_callback(){
     ?>
-    <form  action="" method="post">
-      <label for="job types">job types</label><br />
-      <input type="checkbox" name="full_time" value="full_time"/>
-      <label for="full_time">full time</label><br />
-      <input type="checkbox" name="part_time" value="part_time"/>
-      <label for="part_time">part time</label><br />
-      <input type="checkbox" name="trainee" value="trainee"/>
-      <label for="job types">trainee</label><br />
-      <input type="checkbox" name="intership" value="intership" />
-      <label for="job types">intership</label><br />
-    </form>
+      <label for="salary_type">Choose salary:</label>
+      <select name="salary_types" id="salary_type">
+      <option value="below - 10000">below 10000</option>
+      <option value="10000 - 20000">10000 - 20000</option>
+      <option value="30000 - 40000">30000 - 40000</option>
+      <option value="above 40000">above 40000</option>
+      <?php wp_nonce_field( 'nonce_action', 'nonce_field' ); ?>
+      </select>
+
     <?php
   }
-  public function sub_admin_menu() {
-  add_submenu_page('edit.php?post_type=job-manage',
-                    'wpautop-control',
-                    'Settings',
-                    'administrator',
-                    'settings',
-                    array($this,'call_back'));
+  // function for creating field.
+  public function form_field_callback()
+  {
+    ?>
+      <label for="Qualification">Qualification :</label><br />
+      <input type="text" name="qualification_select" placeholder="Enter the qualification"/>
+      <?php wp_nonce_field( 'nonce_action', 'nonce_field' );
+
+
   }
-  public function call_back(){
-    echo "hai";
-  }
-  public function save_post_data(){
-    if (isset($_POST['full_time'])) {
-        update_post_meta($post_id,'job_type_meta_key',$_POST['full_time']);
-  }
+  // write log function.
+	public function write_log ( $log )  {
+		if ( true === WP_DEBUG ) {
+			if ( is_array( $log ) || is_object( $log ) ) {
+				error_log( print_r( $log, true ) );
+			} else {
+				error_log( $log );
+			}
+		}
+	}
+
+
 }
 
-new  CustomTaxomony;
+new RootPluginClass;
+new ClassAdminSettings;
+new ContentClass;
 
  ?>
