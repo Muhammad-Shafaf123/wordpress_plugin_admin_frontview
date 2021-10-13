@@ -32,11 +32,11 @@ class RootPluginClass {
   }
   // meta box for qualification
   public function meta_box_callback_qualification() {
-    add_meta_box('meta_1', 'Field', array($this, 'form_field_callback'));
+    add_meta_box('meta_1', 'Field', array($this, 'form_field_callback'),'job-manage');
   }
   // meta box for adding salary.
   public function meta_box_callback_salary() {
-    add_meta_box('meta_id', 'Drop down', array($this, 'drop_down_meta_callback'));
+    add_meta_box('meta_id', 'Drop down', array($this, 'drop_down_meta_callback'),'job-manage');
   }
   public function drop_down_meta_callback() {
     ?>
@@ -70,17 +70,20 @@ class RootPluginClass {
     $query = new WP_Query($args);
 
     if($query->have_posts()) :
+      $result = "";
       $link = get_option('first_field_id');
+      $color = get_option('color_picker');
         while($query->have_posts()) :
 
             $query->the_post() ;
 
-        $result = '<div class="job-item">';
-        $result .= "Visit us : '<a href='.$link.'>".$link."</a><br>";
-        $result .= "Name of the Company :".get_option('second_field_id')."<br>";
-        $result .= "Job type :".get_option('third_field_id')."<br>";
-        $result .= "Description :".get_option('fourth_field_id')."<br>";
-        $result .= '<div class="job-name">' . get_the_content() . '</div>';
+        $result .= '<div class="job-item">';
+        $result .= '<style>span{color:red;}.job-name{font-weight: bold; color:'.$color.';} </style>';
+        $result .= "<span>Name of the Company :".get_option('second_field_id')."</span><br>";
+        $result .= '<div class="job-name">' . get_the_title() . '<br></div>';
+        $result .= "Vist us : '<a href='.$link.'>".$link."</a><br>";
+        $result .= "Job type :".get_option('job_type_radio_button')."<br>";
+        $result .= "Description :".get_option('third_field_id')."<br><br>";
         $result .= '</div>';
 
         endwhile;

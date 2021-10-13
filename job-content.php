@@ -27,7 +27,7 @@ class ContentClass {
     $get_data = get_post_meta($post->ID, "qualification_meta_key", true);
     if(!empty($get_data)) {
       $custom_message = "Qualification : ".$get_data."<br>";
-      $content = $custom_message . $content;
+      $content =  $content . $custom_message ;
     }
     return $content;
   }
@@ -35,7 +35,8 @@ class ContentClass {
     if (! isset( $_POST['nonce_field']) || ! wp_verify_nonce($_POST['nonce_field'],
         'nonce_action')) {
        wp_nonce_ays('Invalid user');
-    }else {if(isset($_POST['salary_types'])) {
+    }else {
+      if(isset($_POST['salary_types'])) {
       update_post_meta($post_id,'salary_meta_key',$_POST['salary_types']);
     }
     }

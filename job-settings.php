@@ -24,12 +24,16 @@ class ClassAdminSettings {
       array($this, 'text_area_field_callback'), 'settings', 'first_section');
       add_settings_field('third_field_id', 'Job Type',
       array($this, 'job_type_field_callback'), 'settings', 'first_section');
-      add_settings_field('fourth_field_id', 'Instructions',
+      add_settings_field('job_type_radio_button', 'Instructions',
       array($this, 'instruction_area_field_callback'), 'settings', 'first_section');
+      add_settings_field('color_picker', 'Select Color :',
+      array($this, 'color_picker_callback'), 'settings', 'first_section');
       register_setting('settings', 'first_field_id');
       register_setting('settings', 'second_field_id');
       register_setting('settings', 'third_field_id');
-      register_setting('settings', 'fourth_field_id');
+      register_setting('settings', 'job_type_radio_button');
+      register_setting('settings', 'color_picker');
+
 
 
   }
@@ -54,12 +58,20 @@ class ClassAdminSettings {
       <?php
   }
   public function job_type_field_callback($arguments) {
-    $xyz =  get_option('four_field_id');
-    $def = get_option('four_field_id');
+    $get_field_id1 =  get_option('job_type_radio_button');
+    $get_field_id2 = get_option('job_type_radio_button');
       ?>
-      <input type="radio" name="fourth_field_id" value="full time"><?php $xyz =  checked('full time',$xyz); ?>full time
-      <input type="radio" name="fourth_field_id" value="part time"><?php $def = checked('part time',$def); ?>part time
+      <input type="radio" name="job_type_radio_button" value="full time"><?php
+      $get_field_id1 =  checked('full time',$get_field_id1); ?>full time
+      <input type="radio" name="job_type_radio_button" value="part time"><?php
+      $get_field_id2 = checked('part time',$get_field_id2); ?>part time
       <?php
+  }
+  public function color_picker_callback(){
+    ?>
+    <label for="favcolor">Select your favorite color:</label>
+    <input type="color" id="favcolor" name="color_picker" value="<?php get_option('color_picker'); ?>">
+    <?php
   }
   //create submenu.
   function sub_admin_menu() {
@@ -83,7 +95,6 @@ class ClassAdminSettings {
           </form>
       </div> <?php
   }
-
 
   function write_log($log) {
 		if(true === WP_DEBUG) {
