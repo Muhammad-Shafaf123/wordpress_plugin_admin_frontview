@@ -12,19 +12,18 @@
 require_once('job-settings.php');
 require_once('job-content.php');
 // root class for creating custom taxomony.
-class RootPluginClass
-{
+class RootPluginClass {
   public function __construct() {
     add_action('init', array($this,'create_post_type'));
     add_action('add_meta_boxes', array($this, 'meta_box_callback_qualification'));
     add_action('add_meta_boxes' ,array($this, 'meta_box_callback_salary'));
+    add_shortcode( 'display', array($this, 'display_shortcode_post_type'));
   }
   // create custom post type.
   public function create_post_type() {
     register_post_type('job-manage',
                         array($this, 'labels'=>
-                        array($this, 'name'=>__('Job Manager'),
-                        'singular_name' =>__('jobs')),
+                        array($this, 'name'=>__('Job Manager'), 'singular_name' =>__('jobs')),
                         'public' => true, 'has_archive' => true,
                         'taxonomies' => array( 'category', 'post_tag' ),
                         'rewrite'=> array($this, 'slug'=>'job-manage'),
@@ -58,11 +57,48 @@ class RootPluginClass
       <input type="text" name="qualification_select" placeholder="Enter the qualification"/>
       <?php wp_nonce_field( 'nonce_action', 'nonce_field' );
   }
+
+
+  function display_shortcode_post_type(){
+
+    $args = array(
+                    'post_type'      => 'job-manage',
+                    'posts_per_page' => '5',
+                    'publish_status' => 'published',
+                 );
+
+    $query = new WP_Query($args);
+
+    if($query->have_posts()) :
+      $link = get_option('first_field_id');
+        while($query->have_posts()) :
+
+            $query->the_post() ;
+
+        $result = '<div class="job-item">';
+        $result .= "Visit us : '<a href='.$link.'>".$link."</a><br>";
+        $result .= "Name of the Company :".get_option('second_field_id')."<br>";
+        $result .= "Job type :".get_option('third_field_id')."<br>";
+        $result .= "Description :".get_option('fourth_field_id')."<br>";
+        $result .= '<div class="job-name">' . get_the_content() . '</div>';
+        $result .= '</div>';
+
+        endwhile;
+
+        wp_reset_postdata();
+
+    endif;
+
+    return $result;
+}
+
+
+
   // write log function.
 	public function write_log ($log)  {
 		if ( true === WP_DEBUG ) {
-			if ( is_array( $log ) || is_object($log)) {
-				error_log(print_r($log, true));
+			if ( is_array( $log ) || is_object($log) ) {
+				error_log( print_r( $log, true ) );
 			} else {
 				error_log( $log );
 			}
