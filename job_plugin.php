@@ -73,17 +73,21 @@ class RootPluginClass {
       $result = "";
       $link = get_option('first_field_id');
       $color = get_option('color_picker');
+
+
         while($query->have_posts()) :
 
             $query->the_post() ;
+            $permalink=get_permalink();
 
         $result .= '<div class="job-item">';
-        $result .= '<style>span{color:red;}.job-name{font-weight: bold; color:'.$color.';} </style>';
+        $result .= '<style>span{color:red;}.job-name{font-weight: bold;}.link-permalink{color: '.$color.';} </style>';
         $result .= "<span>Name of the Company :".get_option('second_field_id')."</span><br>";
-        $result .= '<div class="job-name">' . get_the_title() . '<br></div>';
+        $result .= '<div class="job-name"><a class="link-permalink" href='.$permalink.'>' . get_the_title() . '</a><br></div>';
         $result .= "Vist us : '<a href='.$link.'>".$link."</a><br>";
         $result .= "Job type :".get_option('job_type_radio_button')."<br>";
         $result .= "Description :".get_option('third_field_id')."<br><br>";
+
         $result .= '</div>';
 
         endwhile;
@@ -97,16 +101,7 @@ class RootPluginClass {
 
 
 
-  // write log function.
-	public function write_log ($log)  {
-		if ( true === WP_DEBUG ) {
-			if ( is_array( $log ) || is_object($log) ) {
-				error_log( print_r( $log, true ) );
-			} else {
-				error_log( $log );
-			}
-		}
-	}
+
 }
 
 new RootPluginClass;

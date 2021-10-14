@@ -42,13 +42,14 @@ class ClassAdminSettings {
       ?>
       <input name="first_field_id" id="common_link_name"
              type="text" placeholder="www.companyname.com"
-             value="<?php $abc= get_option('first_field_id'); echo $abc;?>"/>
+             value="<?php $display_company_name= get_option('first_field_id'); echo $display_company_name;?>"/>
       <?php
   }
   public function text_area_field_callback($arguments) {
       ?>
       <input name="second_field_id" id="common_link_name"
-             type="text" placeholder="Conpany Name"  value="<?php get_option('second_field_id') ?>"/>'
+             type="text" placeholder="Conpany Name"
+              value="<?php $display_company_link = get_option('second_field_id'); echo $display_company_link;?>"/>'
       <?php
   }
   public function instruction_area_field_callback($arguments) {
@@ -70,7 +71,8 @@ class ClassAdminSettings {
   public function color_picker_callback(){
     ?>
     <label for="favcolor">Select your favorite color:</label>
-    <input type="color" id="favcolor" name="color_picker" value="<?php get_option('color_picker'); ?>">
+    <input type="color" id="color_picker" name="color_picker"
+    value="<?php $color_value = get_option('color_picker'); echo $color_value; ?>">
     <?php
   }
   //create submenu.
