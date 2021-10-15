@@ -7,9 +7,6 @@ class ContentClass {
     add_filter('the_content', array($this, 'display_post_content_salary'));
     add_filter('the_content', array($this, 'display_post_content_submit_button'));
     add_action('init',array($this,'ajax_form_scripts'));
-    add_action('wp_ajax_set_form', array($this,'set_form' ));    //execute when wp logged in
-    add_action('wp_ajax_nopriv_set_form', array($this,'set_form')); //execute when logged out
-
   }
   //update_post_meta, add the field to database.
   public function save_post_datas_qualification($post_id) {
@@ -33,7 +30,7 @@ class ContentClass {
     }
   }
 
-  //  function for form file connection.$this->write_log();
+  //  function for form file connection.
   public function ajax_form_scripts() {
     wp_register_script( "job-action", plugin_dir_url( __FILE__ )."job-action.js",array("jquery"));
     wp_localize_script( 'job-action', 'form_object',array('ajax_url' => admin_url( 'admin-ajax.php')));
@@ -59,8 +56,9 @@ class ContentClass {
     $submit_form .= "<input type='email' placeholder='Enter your Email' name='email' required class='email'><br><br>";
     $submit_form .= "<label for='Message'>Message:</label><br>";
     $submit_form .= "<input type='textarea' placeholder='Message' name='message' required class='message'><br><br>";
-    $submit_form .= "<div class='success' placeholder='Message' name='message' required class='message'><br><br>";
-    $submit_form .= "<input type = 'submit' class='submitbtn' value='submit'> </form></div>";
+    $submit_form .= "<input type = 'submit' id='show-popup-btn' class='submitbtn' value='submit'> </form></div>";
+    $submit_form .= "<div class='success_message' style='display: none'>Message Sent Successfully</div><br><br>";
+
 
     return $content.$submit_form;
   }
@@ -106,26 +104,5 @@ class ContentClass {
 		}
 	}
 
-
-
-  public function set_form(){
-	$name = $_POST['name'];
-	$email = $_POST['email'];
-	$message = $_POST['message'];
-	$admin =get_option('admin_email');
-  $this->write_log($email);
-	// wp_mail($email,$name,$message);  main sent to admin and the user
-	if(wp_mail($email, $name, $message)  &&  wp_mail($admin, $name, $message) )
-       {
-           echo "mail sent";
-   } else {
-          echo "mail not sent";
-   }
-	die();
-
 }
-}
-
-
-
  ?>

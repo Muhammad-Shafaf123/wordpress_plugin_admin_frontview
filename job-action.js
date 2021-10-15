@@ -7,14 +7,6 @@ $('form.ajax').on('submit', function(e){
    var name = $('.name').val();
    var email = $('.email').val();
    var message = $('.message').val();
-   console.log(name);
-   console.log(email);
-   console.log(message);
-   if (name!="" || email !="" || message!=""){
-     alert("Form submitted");
-   }else {
-     console.log("not")
-   }
    $.ajax({
       url: form_object.ajax_url,
       type:"POST",
@@ -25,11 +17,10 @@ $('form.ajax').on('submit', function(e){
          email:email,
          message:message,
     },   success: function(response){
-        $(".success_msg").css("display","block");
+        $('.success_message').css('display','block');
      }, error: function(data){
-         $(".error_msg").css("display","block");      }
+         $('.success_message').css('display','block').append("<h6>name :"+name+"</h6><h6>email :"+email+"</h6><h6>massage : "+message+"</h6>");     }
    });
-   console.log(name);
 $('.ajax')[0].reset();
   });
 });
