@@ -4,13 +4,19 @@ $('form.ajax').on('submit', function(e){
    var that = $(this),
    url = that.attr('action'),
    type = that.attr('method');
-   var firstname = $('.first-name').val();
-   var lastname = $('.last-name').val();
-   var qualifiction = $('.qualifiction').val();
-   var phone = $('.phone-no').val();
-   var email = $('.email-id').val();
+   var name = $('.name').val();
+   var email = $('.email').val();
+   var message = $('.message').val();
+   console.log(name);
+   console.log(email);
+   console.log(message);
+   if (name!="" || email !="" || message!=""){
+     alert("Form submitted");
+   }else {
+     console.log("not")
+   }
    $.ajax({
-      url: cpm_object.ajax_url,
+      url: form_object.ajax_url,
       type:"POST",
       dataType:'type',
       data: {
@@ -23,12 +29,13 @@ $('form.ajax').on('submit', function(e){
      }, error: function(data){
          $(".error_msg").css("display","block");      }
    });
+   console.log(name);
 $('.ajax')[0].reset();
   });
 });
 
-function sample(){
-  console.log("hello..!");
+function applay_button(){
+  console.log("button clicked..");
   document.getElementById("fn").style.display = "block";
 
 }

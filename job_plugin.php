@@ -14,13 +14,14 @@ require_once('job-content.php');
 // root class for creating custom taxomony.
 class RootPluginClass {
   public function __construct() {
-    add_action('init', array($this,'create_post_type'));
+    add_action('init', array($this,'create_post_type_job'));
+    add_action('init', array($this,'create_post_type_job_list'));
     add_action('add_meta_boxes', array($this, 'meta_box_callback_qualification'));
     add_action('add_meta_boxes' ,array($this, 'meta_box_callback_salary'));
     add_shortcode( 'display', array($this, 'display_shortcode_post_type'));
   }
   // create custom post type.
-  public function create_post_type() {
+  public function create_post_type_job() {
     register_post_type('job-manage',
                         array($this, 'labels'=>
                         array($this, 'name'=>__('Job Manager'), 'singular_name' =>__('jobs')),
@@ -29,6 +30,16 @@ class RootPluginClass {
                         'rewrite'=> array($this, 'slug'=>'job-manage'),
                         )
                       );
+  }
+  //create custom post type.
+  public function create_post_type_job_list(){
+      register_post_type('job-list',
+                         array($this, 'labels'=>
+                         array($this, 'name'=>__('Job List'), 'singular_name' =>__('job')),
+                         'public' => true, 'has_archive' => true,
+                         'rewrite'=> array($this, 'slug'=>'job-manage'),
+                         )
+                       );
   }
   // meta box for qualification
   public function meta_box_callback_qualification() {
