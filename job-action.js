@@ -6,15 +6,17 @@ $('form.ajax').on('submit', function(e){
    type = that.attr('method');
    var name = $('.name').val();
    var email = $('.email').val();
+   var job_title = $('.job_title').val();
    var message = $('.message').val();
    $.ajax({
       url: form_object.ajax_url,
       type:"POST",
       dataType:'type',
       data: {
-         action:'set_form',
+         action:'validate_form',
          name:name,
          email:email,
+         job_title:job_title,
          message:message,
     },   success: function(response){
         $('.success_message').css('display','block');
@@ -26,7 +28,6 @@ $('.ajax')[0].reset();
 });
 
 function applay_button(){
-  console.log("button clicked..");
   document.getElementById("fn").style.display = "block";
 
 }
