@@ -17,12 +17,14 @@ if ( !class_exists( 'ContentClass' ) ) {
           'nonce_action')) {
             return $post_id;
       }
+      if ( !current_user_can( 'edit_post', $post_id ) ) {
+        return $post_id;
+      }
       if ( isset( $_POST['qualification_select'] ) ) {
         $data_qualification_test = sanitize_text_field( $_POST['qualification_select'] );
         update_post_meta($post_id,'qualification_meta_key', $data_qualification_test);
       }
     }
-
     /**
     * update_post_meta, add the field to database.
     */
@@ -31,23 +33,25 @@ if ( !class_exists( 'ContentClass' ) ) {
           'nonce_action' ) ) {
             return $post_id;
       }
+      if ( !current_user_can( 'edit_post', $post_id ) ) {
+        return $post_id;
+      }
       if ( isset( $_POST['salary_types'] ) ) {
         $data_salary_types = sanitize_text_field( $_POST['salary_types'] );
         update_post_meta( $post_id,'salary_meta_key',$data_salary_types );
       }
     }
-
     /**
     *  function for form file connection.
     */
     public function ajax_form_scripts() {
-      wp_register_script( "job-action", plugin_dir_url( __FILE__ )."job-action.js",array("jquery" ) );
+      wp_register_script( "job-action", plugin_dir_url( __FILE__ )."job-action.js",array( "jquery" ) );
       wp_localize_script( 'job-action', 'form_object',array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
       wp_enqueue_script( 'jquery' );
       wp_enqueue_script( 'job-action' );
     }
     /**
-    * callback for creating form.
+    * callback for creating job application form.
     */
     public function display_post_content_submit_button( $content ){
       if( !is_single() ) {
@@ -61,7 +65,7 @@ if ( !class_exists( 'ContentClass' ) ) {
       $form_buttton .= "</div>";
       $content .= $form_buttton;
       /**
-      * html form.
+      * when click apply button, to show the form
       */
       $submit_form = "<div id='fn' hidden><form action='' method='post' class='ajax'>";
       $submit_form .= "<label for='name'>name:</label><br>";
@@ -73,12 +77,8 @@ if ( !class_exists( 'ContentClass' ) ) {
       $submit_form .= "<input name='job_title'  class='job_title' value='$job_title' hidden><br><br>";
       $submit_form .= "<input type = 'submit' id='show-popup-btn' class='submitbtn' value='submit'> </form></div>";
       $submit_form .= "<div class='success_message' style='display: none'>Message Sent Successfully</div><br><br>";
-
-
       return $content.$submit_form;
     }
-
-
     /**
     * display the content,qualification.
     */

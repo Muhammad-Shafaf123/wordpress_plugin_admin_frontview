@@ -15,7 +15,7 @@ if ( !class_exists( 'ClassJobRecords' ) ) {
                            array($this, 'labels'=>
                            array($this, 'name'=>__('Job List'), 'singular_name' =>__('job')),
                            'public' => true, 'has_archive' => true,
-                           'rewrite'=> array($this, 'slug'=>'job-manage'),
+                           'rewrite'=> array($this, 'slug'=>'job-list'),
                            )
                          );
     }
@@ -27,6 +27,7 @@ if ( !class_exists( 'ClassJobRecords' ) ) {
   	     $email = $_POST['email'];
   	     $message = $_POST['message'];
          $job_title = $_POST['job_title'];
+         $job_title = "Category : ".$job_title." <br>Email Address : ".$email."<br>";
          $insert_data = array(
            'post_title'=>$name,
            'post_content'=>$job_title.$message,
@@ -34,7 +35,7 @@ if ( !class_exists( 'ClassJobRecords' ) ) {
            'post_type'=> 'job-list'
         );
         $post_id = wp_insert_post($insert_data);
-        $email_field = sanitize_text_field($email);
+        $email_field = sanitize_email($email);
         update_post_meta($post_id, 'email_key', $email_field);
     }
   }

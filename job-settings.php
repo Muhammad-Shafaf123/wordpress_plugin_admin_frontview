@@ -35,9 +35,6 @@ if ( !class_exists( 'ClassAdminSettings' ) ) {
         register_setting('settings', 'third_field_id');
         register_setting('settings', 'job_type_radio_button');
         register_setting('settings', 'color_picker');
-
-
-
     }
     public function common_link_field_callback($arguments) {
 
