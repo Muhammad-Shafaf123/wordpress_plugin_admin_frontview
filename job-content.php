@@ -54,20 +54,20 @@ if ( !class_exists( 'ContentClass' ) ) {
     * callback for creating job application form.
     */
     public function display_post_content_submit_button( $content ){
-      if( !is_single() ) {
+      if( !is_singular('job-manage') ) {
         return $content;
       }
       $job_title = get_the_title();
       /**
       * apply button.
       */
-      $form_buttton = "<input onclick='applay_button()' type='button' value='Apply this job' id='button' >";
+      $form_buttton = "<input class='content' onclick='applay_button()' type='button' value='Apply this job' id='button' >";
       $form_buttton .= "</div>";
       $content .= $form_buttton;
       /**
       * when click apply button, to show the form
       */
-      $submit_form = "<div id='fn' hidden><form action='' method='post' class='ajax'>";
+      $submit_form = "<div id='fn' hidden><form action='' method='post' class='apply'>";
       $submit_form .= "<label for='name'>name:</label><br>";
       $submit_form .= "<input type='text' placeholder='Enter Your Name' name='name' required class='name'><br>";
       $submit_form .= "<label for='email'>Email:</label><br>";
@@ -75,9 +75,12 @@ if ( !class_exists( 'ContentClass' ) ) {
       $submit_form .= "<label for='Message'>Message:</label><br>";
       $submit_form .= "<input type='textarea' placeholder='Message' name='message' required class='message'><br><br>";
       $submit_form .= "<input name='job_title'  class='job_title' value='$job_title' hidden><br><br>";
-      $submit_form .= "<input type = 'submit' id='show-popup-btn' class='submitbtn' value='submit'> </form></div>";
+      $submit_form .= "<input type = 'submit' id='show-popup-btn' onclick='togglePopup()' class='submitbtn' value='submit'> </form></div>";
       $submit_form .= "<div class='success_message' style='display: none'>Message Sent Successfully</div><br><br>";
-      return $content.$submit_form;
+      $sample = "<script>for (let i = 0; i < 11; i++) {
+                  console.log('hai')
+                  }</script>";
+      return $content.$sample.$submit_form;
     }
     /**
     * display the content,qualification.
